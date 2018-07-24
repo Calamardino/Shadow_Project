@@ -8,9 +8,9 @@ public class CTileMap
 	private GameObject mMapObject;
 
     //Cantidad de columnas
-    public const int MAP_WIDTH = 17;
+    public const int MAP_WIDTH = 20;
     //Cantidad de filas
-    public const int MAP_HEIGHT = 13;
+    public const int MAP_HEIGHT = 12;
 
     //48x48 pixeles mide cada tile, aumenta la distancia
     public const int TILE_WIDTH = 48*2;

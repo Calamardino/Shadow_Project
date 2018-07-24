@@ -18,6 +18,7 @@ public class CTile : CSprite
 		setImage (aSprite);
 		setSortingLayerName ("MapExplorer");
         setName("tile");
+        setScale(2.0f);
     }
 
 	public void setTileIndex(int aTileIndex)
