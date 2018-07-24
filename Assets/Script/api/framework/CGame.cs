@@ -20,8 +20,8 @@ public class CGame : MonoBehaviour
 		CMouse.init();
 		CKeyboard.init ();
 
-
-    setState(new CMainMenuState());
+        // INIT FIRST STATE
+        setState(new CLevel1());
 	}
 
 	static public CGame inst()
@@ -42,7 +42,7 @@ public class CGame : MonoBehaviour
 
 	void LateUpdate()
 	{
-		render ();
+		render();
 	}
 
 	private void update()
@@ -50,33 +50,6 @@ public class CGame : MonoBehaviour
 		CMouse.update ();
 		CKeyboard.update ();
 		mState.update ();
-        if ( mState is CLevelState)
-		{
-			if( mState.getState() == CLevelState.FINISHED)
-			{
-            	setState(new BattleState());
-            	return;
-			}
-		}
-        else if (mState is BattleState)
-        {
-            if (mState.getState() == BattleState.PLAYER_WON)
-            {
-                //GIVE player rewards.
-				BattleData.lastBattleOutcome = BattleData.BattleOutcome.WON;
-				BattleData.battlesWon++;
-                setState(new CMainMenuState());
-                return;
-            }
-            else if (mState.getState() == BattleState.PLAYER_LOST)
-            {
-				//GAME OVER 
-				BattleData.lastBattleOutcome = BattleData.BattleOutcome.LOST;
-				BattleData.battlesLost++;
-                setState(new CLevelState());
-                return;
-            }
-        }
 	}
 
 	private void render()
@@ -105,6 +78,7 @@ public class CGame : MonoBehaviour
 		}
 
 		mState = aState;
+        Debug.Log("holi");
 		mState.init ();
 	}
 
