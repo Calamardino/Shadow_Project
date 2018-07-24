@@ -25,7 +25,7 @@ static public class DialogManager
 		mInitialized = true;
 
         dialogs = new List<Dialog>();
-
+        /*
         shadow = new CSprite();
         //Esta tambien el shadow solo que llena toda la pantalla
         shadow.setImage(Resources.Load<Sprite>("Sprites/dialogShadow/shadow"));
@@ -47,7 +47,7 @@ static public class DialogManager
         text.setVisible(false);
         text.setXY(CGameConstants.SCREEN_WIDTH / 4 + MARGIN, shadow.getY() + MARGIN);
         text.setWidth(CGameConstants.SCREEN_WIDTH / 4 * 3 - MARGIN * 2);
-
+        */
     }
 
 	public static void update()

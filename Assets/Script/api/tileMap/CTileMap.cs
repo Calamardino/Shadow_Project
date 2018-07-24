@@ -8,9 +8,9 @@ public class CTileMap
 	private GameObject mMapObject;
 
     //Cantidad de columnas
-    public const int MAP_WIDTH = 20;
+    public const int MAP_WIDTH = 17;
     //Cantidad de filas
-    public const int MAP_HEIGHT = 12;
+    public const int MAP_HEIGHT = 13;
 
     //48x48 pixeles mide cada tile, aumenta la distancia
     public const int TILE_WIDTH = 48*2;
@@ -24,7 +24,7 @@ public class CTileMap
 
     // Cantidad de tiles que hay.
     // TODO ver la cantidad de tiles diferentes
-    private const int NUM_TILES = 3;
+    private const int NUM_TILES = 2;
 
     // Array con los sprites de los tiles.
     private Sprite[] mTiles;
@@ -34,17 +34,17 @@ public class CTileMap
     //Es el mapa con el indice de los tipos de tiles, despues hay que hacer el mapa
     //TODO Ver la cantidad optima para el overworld.
     public static int[] LEVEL_001 = {
-        2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,2,
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,2,
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,2,
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,2,
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,
-        2, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,2,
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,2,
-        2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,2,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,
+        1, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1
 
     };
@@ -60,9 +60,9 @@ public class CTileMap
         mMapObject =    new GameObject();
         mMapObject.name = "Mapa";
         mTiles = new Sprite[NUM_TILES];
-        mTiles[0] = Resources.Load<Sprite>("Sprites/tiles/empty_tile");
-        mTiles[1] = Resources.Load<Sprite>("Sprites/tiles/tile_wall1");
-        mTiles[2] = Resources.Load<Sprite>("Sprites/tiles/wall002");
+        mTiles[0] = Resources.Load<Sprite>("Sprites/tiles/tile000");
+        mTiles[1] = Resources.Load<Sprite>("Sprites/tiles/tile001");
+        //mTiles[2] = Resources.Load<Sprite>("Sprites/tiles/wall002");
         /*mTiles[3] = Resources.Load<Sprite>("Sprites/tiles/tile003");
         mTiles[4] = Resources.Load<Sprite>("Sprites/tiles/tile004");
         mTiles[5] = Resources.Load<Sprite>("Sprites/tiles/tile005");*/
