@@ -13,12 +13,12 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Background
+  - TileMap
+  - Enemies
+  - Bullets
+  - Particles
   - 
   - 
   - 
@@ -40,4 +40,25 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2577330551
+    locked: 0
+  - name: TileMap
+    uniqueID: 148833505
+    locked: 0
+  - name: Enemies
+    uniqueID: 3616691223
+    locked: 0
+  - name: Bullets
+    uniqueID: 1892125845
+    locked: 0
+  - name: Player
+    uniqueID: 567750243
+    locked: 0
+  - name: Particles
+    uniqueID: 458569973
+    locked: 0
+  - name: UI
+    uniqueID: 2470844471
     locked: 0

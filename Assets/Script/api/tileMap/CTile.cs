@@ -61,4 +61,10 @@ public class CTile : CSprite
     {
         mIsWalkable = aIsWalkable;
     }
+
+    // Desde tilemap la llamamos para cambiar un tile con otro, incluyamosla para probar colisiones.
+    public void clicked()
+    {
+        //setColor(Color.red);
+    }
 }

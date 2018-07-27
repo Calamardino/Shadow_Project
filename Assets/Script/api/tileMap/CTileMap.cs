@@ -154,6 +154,26 @@ public class CTileMap
                 mMap[y][x].update();
             }
         }
+        int col = (int)(CMouse.getX() / TILE_WIDTH);
+        int row = (int)(CMouse.getY() / TILE_HEIGHT);
+        CTile tile = getTile(col, row);
+        if (tile != null)
+        {
+            if (CMouse.firstPress())
+            {
+                int index = tile.getTileIndex();
+                if (index == 0)
+                {
+                    tile.setTileIndex(1);
+                    tile.setImage(mTiles[1]);
+                }
+                else if (index == 1)
+                {
+                    tile.setTileIndex(0);
+                    tile.setImage(mTiles[0]);
+                }
+            }
+        }
     }
 
     public void render()

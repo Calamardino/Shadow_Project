@@ -80,6 +80,7 @@
     <Compile Include="Assets\Script\game\BattleData.cs" />
     <Compile Include="Assets\Script\game\CGameConstants.cs" />
     <Compile Include="Assets\Script\game\Dialog.cs" />
+    <Compile Include="Assets\Script\game\entities\Player.cs" />
     <Compile Include="Assets\Script\game\managers\DialogManager.cs" />
     <Compile Include="Assets\Script\game\managers\turnActionManager.cs" />
     <Compile Include="Assets\Script\game\States\CLevel1.cs" />

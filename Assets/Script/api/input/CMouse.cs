@@ -74,4 +74,13 @@ public class CMouse
 		pos.z = 0;
 		return pos;
 	}
+    public static float getX()
+    {
+        return getPos().x;
+    }
+
+    public static float getY()
+    {
+        return getPos().y;
+    }
 }

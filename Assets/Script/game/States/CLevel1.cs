@@ -6,6 +6,7 @@ public class CLevel1 : CGameState
 {
     public const int IN_PROGRESS = 0;
     public const int FINISHED = 1;
+    private CPlayer mAndy;
 
     private CTileMap mMap;
 
@@ -16,16 +17,20 @@ public class CLevel1 : CGameState
         CGame.inst().setMap(mMap);
         setState(CLevel1.IN_PROGRESS);
         Debug.Log("cree CLevel1");
+        mAndy = new CPlayer();
+        mAndy.setXY(200, 200);
     }
     public override void update()
     {
         base.update();
         mMap.update();
+        mAndy.update();
     }
     public override void render()
     {
         base.render();
         mMap.render();
+        mAndy.render();
     }
     public override void destroy()
     {
@@ -33,5 +38,8 @@ public class CLevel1 : CGameState
 
         mMap.destroy();
         mMap = null;
+
+        mAndy.destroy();
+        mAndy = null;
     }
 }
