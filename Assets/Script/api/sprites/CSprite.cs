@@ -31,7 +31,7 @@ public class CSprite : CGameObject
 
 	public const int REG_CENTER = 0;
 	public const int REG_TOP_LEFT = 1;
-	private int mRegistration = REG_CENTER;
+    private int mRegistration = REG_CENTER;
     private int mScore;
 
 	public CSprite()
@@ -55,13 +55,14 @@ public class CSprite : CGameObject
 
 		int offsetX = 0;
 
+        int offsetY = 0;
 		if (mRegistration == REG_TOP_LEFT) 
 		{
 			if (mFlip) 
 			{
 				offsetX = getWidth ();
 			}
-		}
+        }
 
 		Vector3 pos = new Vector3 (getX () + offsetX, getY () * -1, 0.0f);
 		mTransform.position = pos;

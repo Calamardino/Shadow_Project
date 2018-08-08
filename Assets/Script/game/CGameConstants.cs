@@ -7,7 +7,7 @@ public class CGameConstants
     public const int SCREEN_HEIGHT = 1080;
 
     public const float GRAVITY = 900.0f * 2;
-    public const float JUMP_SPEED = -500.0f * 2;
+    public const float JUMP_SPEED = -550 * 2;
 
     // General constants for gameplay programming.
     public const int LEFT = 0;

@@ -10,6 +10,12 @@ public class CLevel1 : CGameState
 
     private CTileMap mMap;
 
+    private hitBoxManager mHitBoxManager;
+
+    private bigEnemy mBigEnemy;
+    
+
+    //private CText title;
     override public void init()
     {
         base.init();
@@ -19,18 +25,30 @@ public class CLevel1 : CGameState
         Debug.Log("cree CLevel1");
         mAndy = new CPlayer();
         mAndy.setXY(200, 200);
+        /*title = new CText("holi");
+        title.setXY(200, 200);*/
+        mBigEnemy = new bigEnemy();
+
+
+        mHitBoxManager = new hitBoxManager();
     }
     public override void update()
     {
         base.update();
         mMap.update();
         mAndy.update();
+        //title.update();
+        mHitBoxManager.update();
+        mBigEnemy.update();
     }
     public override void render()
     {
         base.render();
         mMap.render();
         mAndy.render();
+        //title.render();
+        mHitBoxManager.render();
+        mBigEnemy.render();
     }
     public override void destroy()
     {
@@ -41,5 +59,13 @@ public class CLevel1 : CGameState
 
         mAndy.destroy();
         mAndy = null;
+
+        mBigEnemy.destroy();
+        mBigEnemy = null;
+
+        mHitBoxManager.destroy();
+
+        /*title.destroy();
+        title = null;*/
     }
 }

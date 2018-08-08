@@ -5,8 +5,10 @@ using UnityEngine;
 public class CPlayer : CAnimatedSprite
 {
     //fede mantengo la parte de width y height del andy
-    private const int WIDTH = 64 * 2;
-    private const int HEIGHT = 74 * 2;
+    private const int SCALE = 3;
+
+    private const int WIDTH = 40 * SCALE;
+    private const int HEIGHT = 43 * SCALE;
 
     private const int STATE_STAND = 0;
     private const int STATE_WALKING = 1;
@@ -15,8 +17,15 @@ public class CPlayer : CAnimatedSprite
     private const int STATE_HIT_ROOF = 4;
     private const int STATE_GHOST = 5;
 
-    private CSprite mRect;
+    private int maxEnergy;
+
+    private int currentEnergy;
+
+    private int speed = 700;
+
     private CSprite mRect2;
+
+    private hitBoxManager mHitBoxManager;
 
     //Coordenada que sirve para verificar la posicion anterior del player, se utiliza para chequear la posicion horizontal antes de la vertical.
     private float mOldY;
@@ -26,28 +35,27 @@ public class CPlayer : CAnimatedSprite
     private const int X_OFFSET_BOUNDING_BOX = 8 * 2;
     private const int Y_OFFSET_BOUNDING_BOX = 13 * 2;
 
+    private hitBox box;
+    
     public CPlayer()
     {
-        setFrames(Resources.LoadAll<Sprite>("Sprites/Andy"));
+        setFrames(Resources.LoadAll<Sprite>("Sprites/player"));
         setName("andy");
         setSortingLayerName("Player");
         //Mantengo el size original dado que el mapa se mantuvo del mismo size
-        setScale(2.0f);
+        setScale(SCALE);
         setRegistration(CSprite.REG_TOP_LEFT);
         setWidth(WIDTH);
         setHeight(HEIGHT);
         setState(STATE_STAND);
+
         //definimos el bounding box del player, es decir la distancia entre el borde del sprite y el actual dibujo de andy.
         setXOffsetBoundingBox(X_OFFSET_BOUNDING_BOX);
         setYOffsetBoundingBox(Y_OFFSET_BOUNDING_BOX);
 
-        //Mantengo la utilidad de la recta para medir las colisiones, sin embargo oculto la 1 dado que no creo que sirva usarlo ya que usamos el bounding box
-        /*mRect = new CSprite();
-        mRect.setImage(Resources.Load<Sprite>("Sprites/ui/pixel"));
-        mRect.setSortingLayerName("Player");
-        mRect.setSortingOrder(20);
-        mRect.setAlpha(0.5f);
-        mRect.setName("player_debug_rect");*/
+        maxEnergy = 150;
+        currentEnergy = maxEnergy;
+
 
         mRect2 = new CSprite();
         mRect2.setImage(Resources.Load<Sprite>("Sprites/ui/pixel"));
@@ -56,6 +64,8 @@ public class CPlayer : CAnimatedSprite
         mRect2.setColor(Color.red);
         mRect2.setAlpha(0.5f);
         mRect2.setName("player_debug_rect2");
+
+        mHitBoxManager = new hitBoxManager();
     }
     //llamamos a la posicion anterior en el eje de las Y.
     private void setOldYPosition()
@@ -69,8 +79,9 @@ public class CPlayer : CAnimatedSprite
 
         base.update();
 
-        if (getState() == STATE_STAND)
+        if (getState() == STATE_STAND) 
         {
+            setFriction(1);
             //TODO: REALIZAR EL BOUNDING BOX VERTICAL (ARRIBA Y ABAJO) DEL PERSONAJE PARA EL ESTADO GHOST.
             // TODO: EN EL ESTADO GHOST CAERA O VOLARA A OTRA DIRECCION? PLANTEAR TIMER.
 
@@ -96,7 +107,7 @@ public class CPlayer : CAnimatedSprite
                 return;
             }
 
-            if (CKeyboard.firstPress(CKeyboard.SPACE))
+            if (CKeyboard.firstPress(CKeyboard.UP))
             {
                 setState(STATE_JUMPING);
                 return;
@@ -128,7 +139,7 @@ public class CPlayer : CAnimatedSprite
             }
 
             //Barra espaciadora salta, first press por lo tanto solo cuando se presiona, si se mantiene presionado no salta.
-            if (CKeyboard.firstPress(CKeyboard.SPACE))
+            if (CKeyboard.firstPress(CKeyboard.UP))
             {
                 setState(STATE_JUMPING);
                 return;
@@ -167,7 +178,7 @@ public class CPlayer : CAnimatedSprite
                     else
                     {
                         // No hay pared, se puede mover.
-                        setVelX(-400);
+                        setVelX(-speed);
                         setFlip(true);
                     }
                 }
@@ -186,7 +197,7 @@ public class CPlayer : CAnimatedSprite
                     else
                     {
                         // No hay pared, se puede mover.
-                        setVelX(400);
+                        setVelX(speed);
                         setFlip(false);
                     }
                 }
@@ -233,46 +244,67 @@ public class CPlayer : CAnimatedSprite
         }
         // Chequear el paso entre pantallas.
         //controlRooms();
+        if (getState() != STATE_GHOST)
+        {
+            if (currentEnergy < maxEnergy)
+            {
+                currentEnergy++;
+            }
+            if (CKeyboard.firstPress(CKeyboard.SPACE))
+            {
+                if (currentEnergy >= (maxEnergy / 5))
+                {
+                    currentEnergy = currentEnergy - (maxEnergy / 5);
+                    setState(STATE_GHOST);
+                    return;
+                }
+            }
+        }
+        if (getState() == STATE_GHOST)
+        {
+            setFriction(0.95f);
+            if (currentEnergy == 0)
+            {
+                setState(STATE_STAND);
+                return;
+            }
+            else
+            {
+                currentEnergy--;
+                ghostMove();
+            }
+            if (CKeyboard.firstPress(CKeyboard.SPACE))
+            {
+                setState(STATE_STAND);
+                return;
+            }
+        }
+        if (CKeyboard.firstPress(CKeyboard.KEY_C))
+        {
+            if (getState()!= STATE_GHOST)
+            {
+                if (getFlip())
+                {
+                    box = new hitBox(this, 30, 135, 5, (getHeight() / 2) - (135 / 2), 10, 60, hitBox.ALLYBOX);
+                    mHitBoxManager.addBox(box);
+                }
+                else
+                {
+                    box = new hitBox(this, 30, 135, 5+getWidth()-38, (getHeight() / 2) - (135 / 2), 10, 60, hitBox.ALLYBOX);
+                    mHitBoxManager.addBox(box);
+                }
+                
+            }
+        }
+
+        /*if (box != null)
+        {
+            box.update();
+        }*/
+        mHitBoxManager.update();
     }
 
-    //Control del pasaje de las habitaciones, por ahora solo lo utilizamos con los cuartos de la derecha.
-    //TODO realizar mas cuarto sde prueba.
-    private void controlRooms()
-    {
-        CTileMap map = CGame.inst().getMap();
-
-        if (getX() + getWidth() / 2 > CTileMap.WORLD_WIDTH)
-        {
-            // Se fue por la derecha.
-            //map.changeRoom(CGameConstants.RIGHT);
-
-            // Aparece por la izquierda.
-            //setX(-getWidth() / 2);
-        }
-        else if (getX() + getWidth() / 2 < 0)
-        {
-            // Se fue por la izquierda.
-            //map.changeRoom(CGameConstants.LEFT);
-
-            //setX(CTileMap.WORLD_WIDTH - getWidth() / 2);
-        }
-        else if (getY() + getHeight() / 2 > CTileMap.WORLD_HEIGHT)
-        {
-            // Se fue por abajo.
-            //map.changeRoom(CGameConstants.DOWN);
-
-            //setY(-getHeight() / 2);
-        }
-        else if (getY() + getHeight() / 2 < 0)
-        {
-            // Se fue por arriba.
-            //map.changeRoom(CGameConstants.UP);
-
-            //setY(CTileMap.WORLD_HEIGHT - getHeight() / 2);
-        }
-    }
-    // Se llama desde los estados jumping y falling para movernos para los costados.
-    // Permite controlar el movimiento horizantal durante el estado de salto y de caida.
+    
     private void controlMoveHorizontal()
     {
         // Si estamos en una pared, corregirnos.
@@ -306,7 +338,7 @@ public class CPlayer : CAnimatedSprite
                 else
                 {
                     // No hay pared, se puede mover.
-                    setVelX(-400);
+                    setVelX(-speed);
                     setFlip(true);
                 }
             }
@@ -322,10 +354,40 @@ public class CPlayer : CAnimatedSprite
                 else
                 {
                     // No hay pared, se puede mover.
-                    setVelX(400);
+                    setVelX(speed);
                     setFlip(false);
                 }
             }
+        }
+    }
+    public void ghostMove()
+    {
+
+        /*if (!CKeyboard.pressed(CKeyboard.LEFT) && (!CKeyboard.pressed(CKeyboard.RIGHT)))
+        {
+            setVelX(0);
+        }
+        else*/
+        if (CKeyboard.pressed(CKeyboard.LEFT))
+        {
+            setVelX(-speed);
+        }
+        else if (CKeyboard.pressed(CKeyboard.RIGHT))
+        {
+            setVelX(speed);
+        }
+        /*if (!CKeyboard.pressed(CKeyboard.UP) && (!CKeyboard.pressed(CKeyboard.DOWN)))
+        {
+            setVelY(0);
+        }
+        else */
+        if (CKeyboard.pressed(CKeyboard.UP))
+        {
+            setVelY(-speed);
+        }
+        else if (CKeyboard.pressed(CKeyboard.DOWN))
+        {
+            setVelY(speed);
         }
     }
     override public void render()
@@ -347,15 +409,26 @@ public class CPlayer : CAnimatedSprite
         mRect2.update();
 
         mRect2.render();
+        /*if (box != null)
+        {
+            box.render();
+        }*/
+        mHitBoxManager.render();
     }
 
     override public void destroy()
     {
         base.destroy();
-        mRect.destroy();
-        mRect = null;
+
         mRect2.destroy();
         mRect2 = null;
+        if (box != null)
+        {
+            box.destroy();
+            box = null;
+        }
+        mHitBoxManager.destroy();
+        mHitBoxManager = null;
     }
 
     public override void setState(int aState)
@@ -365,24 +438,28 @@ public class CPlayer : CAnimatedSprite
         if (getState() == STATE_STAND)
         {
             stopMove();
-            gotoAndStop(1);
+            //gotoAndStop(1);
         }
         else if (getState() == STATE_WALKING)
         {
-            initAnimation(2, 9, 12, true);
+            //initAnimation(2, 9, 12, true);
         }
         else if (getState() == STATE_JUMPING)
         {
-            initAnimation(10, 17, 12, false);
+            //initAnimation(10, 17, 12, false);
             setVelY(CGameConstants.JUMP_SPEED);
             setAccelY(CGameConstants.GRAVITY);
         }
         else if (getState() == STATE_FALLING)
         {
-            initAnimation(15, 17, 12, false);
+            //initAnimation(15, 17, 12, false);
             setAccelY(CGameConstants.GRAVITY);
         }
         else if (getState() == STATE_HIT_ROOF)
+        {
+            stopMove();
+        }
+        else if(getState() == STATE_GHOST)
         {
             stopMove();
         }
